@@ -1,0 +1,20 @@
+package com.rslakra.iws.ecommerce.account.filter;
+
+import com.devamatre.appsuite.spring.filter.AbstractFilter;
+import com.rslakra.iws.ecommerce.account.persistence.entity.User;
+
+import java.util.Map;
+
+/**
+ * @author Rohtash Lakra
+ * @created 2/8/23 1:06 PM
+ */
+public final class UserFilter extends AbstractFilter<User> {
+
+    /**
+     * @param allParams
+     */
+    public UserFilter(Map<String, Object> allParams) {
+        super(allParams);
+    }
+}

@@ -2,7 +2,7 @@ package com.rslakra.iws.ecommerce.task.persistence.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.devamatre.appsuite.core.json.JSONUtils;
+import com.rslakra.appsuite.core.json.JSONUtils;
 
 import java.util.List;
 

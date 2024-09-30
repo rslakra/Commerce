@@ -1,6 +1,6 @@
 package com.rslakra.iws.ecommerce.marketing.persistence.repository;
 
-import com.devamatre.appsuite.spring.persistence.repository.BaseRepository;
+import com.rslakra.appsuite.spring.persistence.repository.BaseRepository;
 import com.rslakra.iws.ecommerce.marketing.persistence.entity.Marketing;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;

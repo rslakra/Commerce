@@ -1,6 +1,6 @@
 package com.rslakra.iws.ecommerce.account.service;
 
-import com.devamatre.appsuite.spring.service.AbstractService;
+import com.rslakra.appsuite.spring.service.AbstractService;
 import com.rslakra.iws.ecommerce.account.persistence.entity.Role;
 
 import java.util.List;

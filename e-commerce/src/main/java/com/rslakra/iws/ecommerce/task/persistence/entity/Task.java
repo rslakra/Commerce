@@ -1,6 +1,6 @@
 package com.rslakra.iws.ecommerce.task.persistence.entity;
 
-import com.devamatre.appsuite.spring.persistence.entity.AbstractEntity;
+import com.rslakra.appsuite.spring.persistence.entity.AbstractEntity;
 import com.rslakra.iws.ecommerce.project.persistence.entity.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

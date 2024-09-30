@@ -1,6 +1,6 @@
 package com.rslakra.iws.ecommerce.marketing.filter;
 
-import com.devamatre.appsuite.spring.filter.AbstractFilter;
+import com.rslakra.appsuite.spring.filter.AbstractFilter;
 import com.rslakra.iws.ecommerce.task.persistence.entity.Task;
 
 import java.util.Map;

@@ -1,6 +1,6 @@
 package com.rslakra.iws.ecommerce.account.filter;
 
-import com.devamatre.appsuite.spring.filter.AbstractFilter;
+import com.rslakra.appsuite.spring.filter.AbstractFilter;
 import com.rslakra.iws.ecommerce.account.persistence.entity.Role;
 
 import java.util.Map;

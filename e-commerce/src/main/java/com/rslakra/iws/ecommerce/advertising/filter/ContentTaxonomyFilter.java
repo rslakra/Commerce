@@ -1,6 +1,6 @@
 package com.rslakra.iws.ecommerce.advertising.filter;
 
-import com.devamatre.appsuite.spring.filter.AbstractFilter;
+import com.rslakra.appsuite.spring.filter.AbstractFilter;
 import com.rslakra.iws.ecommerce.advertising.persistence.entity.ContentTaxonomy;
 
 import java.util.Map;

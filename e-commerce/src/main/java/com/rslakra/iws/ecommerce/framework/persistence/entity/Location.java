@@ -1,6 +1,6 @@
 package com.rslakra.iws.ecommerce.framework.persistence.entity;
 
-import com.devamatre.appsuite.spring.persistence.entity.AbstractEntity;
+import com.rslakra.appsuite.spring.persistence.entity.AbstractEntity;
 
 /**
  * @author Rohtash Lakra

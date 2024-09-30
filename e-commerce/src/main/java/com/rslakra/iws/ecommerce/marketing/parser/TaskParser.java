@@ -1,6 +1,6 @@
 package com.rslakra.iws.ecommerce.marketing.parser;
 
-import com.devamatre.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.BeanUtils;
 import com.rslakra.iws.ecommerce.task.persistence.entity.Task;
 import com.rslakra.iws.parser.AbstractParser;
 import com.rslakra.iws.parser.Parser;

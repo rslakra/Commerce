@@ -1,6 +1,6 @@
 package com.rslakra.iws.ecommerce.framework.service.impl;
 
-import com.devamatre.appsuite.spring.exception.InvalidRequestException;
+import com.rslakra.appsuite.spring.exception.InvalidRequestException;
 import com.rslakra.iws.ecommerce.framework.persistence.ServiceOperation;
 import com.rslakra.iws.ecommerce.framework.persistence.entity.Bucket;
 

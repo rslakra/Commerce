@@ -1,0 +1,25 @@
+{% extends 'fragments/_base.html' %}
+
+{% block header %}
+<h2>{% block title %}Cart{% endblock title %}</h2>
+{% endblock header %}
+
+{% block content %}
+{% include("_navbar_cart.html") %}
+
+<br>
+
+<div class="table">
+    <p>My Cart</p>
+    <ul>
+        <li><a href="#">Cart</a></li>
+        <li><a href="#">Checkout</a></li>
+        <li><a href="#">View</a></li>
+    </ul>
+
+</div>
+
+
+<br>
+
+{% endblock content %}

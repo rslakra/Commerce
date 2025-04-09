@@ -1,0 +1,70 @@
+<!-- Fixed/Top Navbar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+        aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle Navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <!-- uncomment the following line to display hamburger instead of logo -->
+      <!-- <a class="navbar-brand" href="#">
+        <span class="glyphicon glyphicon-menu-hamburger" onclick="openSideNavbar()"></span>
+      </a> -->
+      <a class="navbar-brand" href="{{ url_for('estore.webapp.index') }}">
+        <img style="width: 28px;" src="{{ url_for('static', filename='images/eCommerce-logo.jpg') }}" />
+      </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="{{ url_for('estore.webapp.index') }}">Home</a></li>
+        <li><a href="{{ url_for('estore.webapp.about') }}">About</a></li>
+        <!--<li><a href="{{ url_for('estore.webapp.services') }}">Services</a></li>-->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+            aria-expanded="false">Services <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <!-- <li><a href="{{ url_for('estore.webapp.services') }}">Services</a></li>-->
+            <li><a href="{{ url_for('estore.api.v1.products.index') }}">Products</a></li>
+            <li role="separator" class="divider"></li>
+            <!-- <li class="dropdown-header">Nav header</li>-->
+            <!-- <li><a href="{{ url_for('estore.api.v1.admin.index') }}">Admin</a></li>-->
+            <!-- <li><a href="#">One more separated link</a></li>-->
+          </ul>
+        </li>
+        <li><a href="{{ url_for('estore.webapp.clients') }}">Clients</a></li>
+        <li><a href="{{ url_for('estore.webapp.contact') }}">Contact</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <!-- <li class="active"><a href="./">Fixed Top <span class="sr-only">(current)</span></a></li> -->
+        <li><a href="{{ url_for('estore.api.v1.accounts.login') }}">Login</a></li>
+        <!-- <li><a href="./">Fixed Top <span class="sr-only">(current)</span></a></li>-->
+        <!-- <li><a href="{{ url_for('estore.webapp.logout') }}">Logout</a></li> -->
+        <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+            aria-expanded="false">Account <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="{{ url_for('estore.api.v1.accounts.notifications') }}">Notifications</a></li>
+            <li><a href="{{ url_for('estore.api.v1.accounts.profile') }}">Manage Account</a></li>
+            <li><a href="{{ url_for('estore.api.v1.cart.index') }}">Cart</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="{{ url_for('estore.api.v1.admin.index') }}">Admin</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="{{ url_for('estore.webapp.logout') }}">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<div id="sideNavBarDiv" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeSideNavbar();">&times;</a>
+  <a href="{{ url_for('estore.webapp.about') }}">About</a>
+  <a href="{{ url_for('estore.webapp.services') }}">Services</a>
+  <a href="{{ url_for('estore.webapp.clients') }}">Clients</a>
+  <a href="{{ url_for('estore.webapp.contact') }}">Contact</a>
+</div>

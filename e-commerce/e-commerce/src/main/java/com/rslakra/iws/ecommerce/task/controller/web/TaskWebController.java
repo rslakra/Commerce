@@ -18,20 +18,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author: Rohtash Lakra
-  * @since 09/30/2019 05:38 PM
+ * @since 09/30/2019 05:38 PM
  */
 @Controller
 @RequestMapping("/tasks")
 public class TaskWebController extends AbstractWebController<Task, Long> {
-
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskWebController.class);
-
+    
     // taskService
     private final TaskService taskService;
-
+    
     /**
      * @param taskService
      */
@@ -40,7 +41,7 @@ public class TaskWebController extends AbstractWebController<Task, Long> {
         LOGGER.debug("TaskWebController({})", taskService);
         this.taskService = taskService;
     }
-
+    
     /**
      * Saves the <code>t</code> object.
      *
@@ -58,10 +59,10 @@ public class TaskWebController extends AbstractWebController<Task, Long> {
         } else {
             task = taskService.create(task);
         }
-
+        
         return "redirect:/tasks/list";
     }
-
+    
     /**
      * Returns the list of <code>T</code> objects.
      *
@@ -75,7 +76,7 @@ public class TaskWebController extends AbstractWebController<Task, Long> {
         model.addAttribute("tasks", tasks);
         return "views/task/listTasks";
     }
-
+    
     /**
      * Filters the list of <code>T</code> objects.
      *
@@ -90,7 +91,7 @@ public class TaskWebController extends AbstractWebController<Task, Long> {
         model.addAttribute("tasks", tasks);
         return "views/task/listTasks";
     }
-
+    
     /**
      * @param model
      * @param allParams
@@ -100,7 +101,7 @@ public class TaskWebController extends AbstractWebController<Task, Long> {
     public String filter(Model model, Map<String, Object> allParams) {
         return null;
     }
-
+    
     /**
      * @param model
      * @param taskId
@@ -108,18 +109,18 @@ public class TaskWebController extends AbstractWebController<Task, Long> {
      */
     @GetMapping(path = {"/create", "/update/{taskId}"})
     @Override
-    public String editObject(Model model, @PathVariable(name = "taskId", required = false) Long taskId) {
+    public String editObject(Model model, @PathVariable(name = "taskId", required = false) Optional<Long> taskId) {
         Task task = null;
-        if (BeanUtils.isNotNull(taskId)) {
-            task = taskService.getById(taskId);
+        if (taskId.isPresent()) {
+            task = taskService.getById(taskId.get());
         } else {
             task = new Task();
         }
         model.addAttribute("task", task);
-
+        
         return "views/task/editTask";
     }
-
+    
     /**
      * Deletes the object with <code>id</code>.
      *
@@ -133,7 +134,7 @@ public class TaskWebController extends AbstractWebController<Task, Long> {
         taskService.delete(id);
         return "redirect:/tasks/list";
     }
-
+    
     /**
      * @return
      */

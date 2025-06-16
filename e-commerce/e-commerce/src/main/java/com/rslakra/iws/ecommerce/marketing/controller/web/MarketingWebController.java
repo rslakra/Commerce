@@ -16,18 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author: Rohtash Lakra
-  * @since 09/30/2019 05:38 PM
+ * @since 09/30/2019 05:38 PM
  */
 @Controller
 @RequestMapping("/marketing")
 public class MarketingWebController extends AbstractWebController<Marketing, Long> {
-
+    
     // marketingService
     private final MarketingService marketingService;
-
+    
     /**
      * @param marketingService
      */
@@ -35,7 +36,7 @@ public class MarketingWebController extends AbstractWebController<Marketing, Lon
     public MarketingWebController(MarketingService marketingService) {
         this.marketingService = marketingService;
     }
-
+    
     /**
      * Saves the <code>t</code> object.
      *
@@ -52,10 +53,10 @@ public class MarketingWebController extends AbstractWebController<Marketing, Lon
         } else {
             marketing = marketingService.create(marketing);
         }
-
+        
         return "redirect:/marketing/list";
     }
-
+    
     /**
      * Returns the list of <code>T</code> objects.
      *
@@ -69,7 +70,7 @@ public class MarketingWebController extends AbstractWebController<Marketing, Lon
         model.addAttribute("marketings", marketings);
         return "views/marketing/listMarketings";
     }
-
+    
     /**
      * Filters the list of <code>T</code> objects.
      *
@@ -81,7 +82,7 @@ public class MarketingWebController extends AbstractWebController<Marketing, Lon
     public String filter(Model model, Filter filter) {
         return null;
     }
-
+    
     /**
      * @param model
      * @param allParams
@@ -91,7 +92,7 @@ public class MarketingWebController extends AbstractWebController<Marketing, Lon
     public String filter(Model model, Map<String, Object> allParams) {
         return null;
     }
-
+    
     /**
      * Create the new object or Updates the object with <code>id</code>.
      *
@@ -101,19 +102,19 @@ public class MarketingWebController extends AbstractWebController<Marketing, Lon
      */
     @GetMapping(path = {"/create", "/update/{id}"})
     @Override
-    public String editObject(Model model, @PathVariable(name = "id", required = false) Long id) {
+    public String editObject(Model model, @PathVariable(name = "id", required = false) Optional<Long> id) {
         Marketing marketing = null;
-        if (BeanUtils.isNotNull(id)) {
-            marketing = marketingService.getById(id);
+        if (id.isPresent()) {
+            marketing = marketingService.getById(id.get());
         } else {
             marketing = new Marketing();
         }
         model.addAttribute("marketing", marketing);
-
+        
         return "views/marketing/editMarketing";
     }
-
-
+    
+    
     /**
      * Deletes the object with <code>id</code>.
      *
@@ -127,7 +128,7 @@ public class MarketingWebController extends AbstractWebController<Marketing, Lon
         marketingService.delete(id);
         return "redirect:/marketing/list";
     }
-
+    
     /**
      * @return
      */

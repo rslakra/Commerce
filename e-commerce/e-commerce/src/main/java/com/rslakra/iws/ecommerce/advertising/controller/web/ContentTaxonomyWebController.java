@@ -20,32 +20,29 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author: Rohtash Lakra
-  * @since 09/30/2019 05:38 PM
+ * @since 09/30/2019 05:38 PM
  */
 @Controller
 @RequestMapping("/content-taxonomy")
 public class ContentTaxonomyWebController extends AbstractWebController<ContentTaxonomy, Long> {
-
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(ContentTaxonomyWebController.class);
-
+    
     private final ContentTaxonomyParser contentTaxonomyParser;
-
+    
     // contentTaxonomyService
     private final ContentTaxonomyService contentTaxonomyService;
-
+    
     /**
      * @param contentTaxonomyService
      */
@@ -54,7 +51,7 @@ public class ContentTaxonomyWebController extends AbstractWebController<ContentT
         this.contentTaxonomyParser = new ContentTaxonomyParser();
         this.contentTaxonomyService = contentTaxonomyService;
     }
-
+    
     /**
      * Saves the <code>t</code> object.
      *
@@ -71,10 +68,10 @@ public class ContentTaxonomyWebController extends AbstractWebController<ContentT
         } else {
             contentTaxonomy = contentTaxonomyService.create(contentTaxonomy);
         }
-
+        
         return "redirect:/content-taxonomy/list";
     }
-
+    
     /**
      * Returns the list of <code>T</code> objects.
      *
@@ -88,7 +85,7 @@ public class ContentTaxonomyWebController extends AbstractWebController<ContentT
         model.addAttribute("contentTaxonomies", contentTaxonomies);
         return "views/advertising/content-taxonomy/listContentTaxonomies";
     }
-
+    
     /**
      * Filters the list of <code>T</code> objects.
      *
@@ -103,7 +100,7 @@ public class ContentTaxonomyWebController extends AbstractWebController<ContentT
         model.addAttribute("contentTaxonomies", contentTaxonomies);
         return "views/advertising/content-taxonomy/listContentTaxonomies";
     }
-
+    
     /**
      * @param model
      * @param allParams
@@ -113,25 +110,25 @@ public class ContentTaxonomyWebController extends AbstractWebController<ContentT
     public String filter(Model model, Map<String, Object> allParams) {
         return null;
     }
-
+    
     /**
      * @param model
      * @param contentTaxonomyId
      * @return
      */
     @GetMapping(path = {"/create", "/update/{contentTaxonomyId}"})
-    public String editObject(Model model, @PathVariable(name = "contentTaxonomyId", required = false) Long contentTaxonomyId) {
+    public String editObject(Model model, @PathVariable(name = "contentTaxonomyId", required = false) Optional<Long> contentTaxonomyId) {
         ContentTaxonomy contentTaxonomy = null;
-        if (BeanUtils.isNotNull(contentTaxonomyId)) {
-            contentTaxonomy = contentTaxonomyService.getById(contentTaxonomyId);
+        if (contentTaxonomyId.isPresent()) {
+            contentTaxonomy = contentTaxonomyService.getById(contentTaxonomyId.get());
         } else {
             contentTaxonomy = new ContentTaxonomy();
         }
         model.addAttribute("contentTaxonomy", contentTaxonomy);
-
+        
         return "views/advertising/content-taxonomy/editContentTaxonomy";
     }
-
+    
     /**
      * Deletes the object with <code>id</code>.
      *
@@ -145,7 +142,7 @@ public class ContentTaxonomyWebController extends AbstractWebController<ContentT
         contentTaxonomyService.delete(id);
         return "redirect:/content-taxonomy/list";
     }
-
+    
     /**
      * @return
      */
@@ -153,7 +150,7 @@ public class ContentTaxonomyWebController extends AbstractWebController<ContentT
     public Parser<ContentTaxonomy> getParser() {
         return contentTaxonomyParser;
     }
-
+    
     /**
      * Displays the upload <code>ContentTaxonomys</code> UI.
      *
@@ -163,7 +160,7 @@ public class ContentTaxonomyWebController extends AbstractWebController<ContentT
     public String showUploadPage() {
         return "views/advertising/content-taxonomy/uploadContentTaxonomies";
     }
-
+    
     /**
      * Uploads the file of <code>Roles</code>.
      *
@@ -181,7 +178,7 @@ public class ContentTaxonomyWebController extends AbstractWebController<ContentT
             } else if (ExcelParser.isExcelFile(file)) {
                 contentTaxonomies = contentTaxonomyParser.readStream(file.getInputStream());
             }
-
+            
             // check the task list is available
             if (Objects.nonNull(contentTaxonomies)) {
                 contentTaxonomies = contentTaxonomyService.create(contentTaxonomies);
@@ -194,11 +191,11 @@ public class ContentTaxonomyWebController extends AbstractWebController<ContentT
             payload.withMessage("Could not upload the file '%s'!", file.getOriginalFilename());
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(payload);
         }
-
+        
         payload.withMessage("Unsupported file type!");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(payload);
     }
-
+    
     /**
      * @return
      */
@@ -206,7 +203,7 @@ public class ContentTaxonomyWebController extends AbstractWebController<ContentT
     public String showDownloadPage() {
         return null;
     }
-
+    
     /**
      * Downloads the object of <code>T</code> as <code>fileType</code> file.
      *
@@ -232,12 +229,12 @@ public class ContentTaxonomyWebController extends AbstractWebController<ContentT
         } else {
             throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
         }
-
+        
         // check inputStreamResource is not null
         if (Objects.nonNull(inputStreamResource)) {
             responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
         }
-
+        
         return responseEntity;
     }
 }

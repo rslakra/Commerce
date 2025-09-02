@@ -15,13 +15,17 @@ The ```e-commerce``` repository contains the 'e-commerce' project.
 ---
 
 ```
-    /
-    ├── modules                     # The modules
-    ├── e-commerce                  # The e-commerce Service
-    |    ├── ecommerce              # The IWS Service
-    |    ├── estore                 # The EWS Service
-    |    └── README.md
-    └── README.md
+/
+├── modules                     # The modules
+├── e-commerce                  # The e-commerce Service
+│    ├── ecommerce              # The IWS Service
+│    ├── estore                 # The EWS Service
+│    ├── README.md
+│    └── /
+├── README.md                       # Instructions and helpful links
+├── robots.txt                      # tells which URLs the search engine crawlers can access on your site
+├── <module>                        # The module service
+└── /
 ```
 
 

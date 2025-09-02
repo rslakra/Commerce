@@ -15,13 +15,16 @@ The ```e-commerce``` repository contains the 'e-commerce' project.
 ---
 
 ```
-    /
-    ├── modules                     # The modules
-    ├── e-commerce                  # The e-commerce Service
-    |    ├── ecommerce              # The IWS Service
-    |    ├── estore                 # The EWS Service
-    |    └── README.md
-    └── README.md
+/
+├── modules                     # The modules
+├── e-commerce                  # The e-commerce Service
+│    ├── ecommerce              # The IWS Service
+│    ├── estore                 # The EWS Service
+│    ├── README.md
+│    └── /
+├── README.md
+├── <module>                        # The module service
+└── /
 ```
 
 

@@ -3,7 +3,7 @@
 echo
 git remote -v
 echo
-git remote set-url origin git@github.com:rlakra-tinker/e-commerce.git
+git remote set-url origin git@github.com:rslakra/e-commerce.git
 echo
 git remote -v
 echo

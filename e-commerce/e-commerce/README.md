@@ -2,55 +2,165 @@
 
 ---
 
-The ```e-commerce``` repository contains the 'e-commerce' project.
+The `e-commerce` project is a Spring Boot application for building e-commerce services.
 
-## Types of e-commerce
+## Tech Stack
+
+- **Java**: 21
+- **Spring Boot**: 3.5.7
+- **Spring Data JPA**: For database operations
+- **Spring Security**: For authentication and authorization
+- **Liquibase**: For database migrations
+- **H2 Database**: For development (file-based)
+- **Thymeleaf**: For server-side HTML rendering
+- **Maven**: For build and dependency management
+
+## Types of E-commerce
+
 - Business-to-Business (B2B)
 - Business-to-Consumer (B2C)
 - Consumer-to-Consumer (C2C)
 - Consumer-to-Business (C2B)
 
-## Folder Structure Conventions
+## Features
 
----
+- User authentication (login, logout, password recovery)
+- Role-based access control
+- Product management
+- Task management
+- Marketing campaigns
+- Content taxonomy management
+- REST API for external integrations
+- CSV/Excel file upload and download
+
+## Prerequisites
+
+- Java 21 or later
+- Maven 3.8+
+
+## Building the Application
+
+```bash
+# Build with tests
+./buildMaven.sh
+
+# Or using Maven directly
+mvn clean install
+```
+
+## Running the Application
+
+```bash
+# Using the run script
+./runMaven.sh
+
+# Or using Maven directly
+mvn clean spring-boot:run
+```
+
+## Application URLs
+
+Once running, the application is available at:
+
+| URL | Description |
+|-----|-------------|
+| http://localhost:9080/ecommerce | Main application |
+| http://localhost:9080/ecommerce/h2 | H2 Database Console |
+| http://localhost:9081/actuator | Management endpoints |
+
+## Default Credentials
+
+| Username | Password |
+|----------|----------|
+| admin | Admin123 |
+
+## REST API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/rest/roles` | List all roles |
+| POST | `/rest/roles` | Create a role |
+| PUT | `/rest/roles` | Update a role |
+| DELETE | `/rest/roles/{id}` | Delete a role |
+| GET | `/rest/users` | List all users |
+| POST | `/rest/users` | Create a user |
+| PUT | `/rest/users` | Update a user |
+| DELETE | `/rest/users/{id}` | Delete a user |
+| GET | `/rest/tasks` | List all tasks |
+| POST | `/rest/tasks` | Create a task |
+| PUT | `/rest/tasks` | Update a task |
+| DELETE | `/rest/tasks/{id}` | Delete a task |
+| GET | `/rest/marketing` | List all marketing campaigns |
+| GET | `/rest/content-taxonomy` | List all content taxonomies |
+
+## Web Controllers
+
+| URL | Description |
+|-----|-------------|
+| `/` or `/index` | Home page |
+| `/home` | Dashboard |
+| `/auth/login` | Login page |
+| `/roles/list` | Roles management |
+| `/users/list` | Users management |
+| `/tasks/list` | Tasks management |
+| `/marketing/list` | Marketing management |
+| `/content-taxonomy/list` | Content taxonomy management |
+
+## Configuration
+
+Key configuration properties in `application.properties`:
+
+```properties
+# Server
+server.port=9080
+server.servlet.contextPath=/ecommerce
+
+# Database
+spring.datasource.url=jdbc:h2:file:~/Downloads/H2DB/e-commerce;AUTO_SERVER=TRUE;
+
+# Security
+spring.security.user.name=admin
+spring.security.user.password=Admin123
+```
+
+## Project Structure
 
 ```
-/
-├── modules                     # The modules
-├── e-commerce                  # The e-commerce Service
-│    ├── ecommerce              # The IWS Service
-│    ├── estore                 # The EWS Service
-│    ├── README.md
-│    └── /
-├── README.md
-├── <module>                        # The module service
-└── /
+e-commerce/
+├── src/
+│   ├── main/
+│   │   ├── java/com/rslakra/iws/ecommerce/
+│   │   │   ├── account/          # User and Role management
+│   │   │   ├── advertising/      # Content taxonomy
+│   │   │   ├── alert/            # Event services
+│   │   │   ├── framework/        # Base classes and utilities
+│   │   │   ├── marketing/        # Marketing campaigns
+│   │   │   ├── order/            # Order/Transaction management
+│   │   │   ├── process/          # Schema management
+│   │   │   ├── product/          # Product management
+│   │   │   ├── project/          # Project/Feature management
+│   │   │   ├── report/           # Reporting
+│   │   │   └── task/             # Task management
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       ├── db/changelog/     # Liquibase migrations
+│   │       ├── static/           # Static assets (CSS, JS, images)
+│   │       └── templates/        # Thymeleaf templates
+│   └── test/
+│       └── java/                 # Test classes
+├── buildMaven.sh                 # Build script
+├── runMaven.sh                   # Run script
+├── pom.xml                       # Maven configuration
+└── README.md
 ```
 
+## Database
 
-# Building Application
+The application uses H2 database by default with file-based storage at `~/Downloads/H2DB/e-commerce`.
 
----
+Database migrations are managed by Liquibase and located in `src/main/resources/db/changelog/`.
 
-The example application is an ```e-commerce``` site with the following features:
-
-- Visitors can sign up, log in, and recover passwords.
-- Visitors can search for products and view their details.
-- Users can add products to their cart and checkout.
-- An API enables external systems to search and retrieve product information.
-
-You don’t need to care much about the details of the implementation. 
-Instead, you’ll focus mainly on how a ```Flask Blueprint``` can be used to improve the application’s architecture.
-
-
-## Modules
-
-- [ecommerce-iws](./ecommerce/README.md)
-- [ecommerce-ews](./ewebapp/README.md)
-
-
-
-# Author
+## Author
 
 ---
 

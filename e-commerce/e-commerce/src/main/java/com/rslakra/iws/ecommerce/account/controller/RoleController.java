@@ -51,13 +51,14 @@ public class RoleController extends AbstractRestController<Role, Long> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleController.class);
     private final RoleService roleService;
-
+    private final RoleParser roleParser;
     /**
      * @param roleService
      */
     @Autowired
     public RoleController(final RoleService roleService) {
         this.roleService = roleService;
+        this.roleParser = new RoleParser();
     }
 
     /**
@@ -210,7 +211,6 @@ public class RoleController extends AbstractRestController<Role, Long> {
         Payload payload = Payload.newBuilder();
         try {
             List<Role> roles = null;
-            RoleParser roleParser = new RoleParser();
             if (CsvParser.isCSVFile(file)) {
                 roles = roleParser.readCSVStream(file.getInputStream());
             } else if (ExcelParser.isExcelFile(file)) {
@@ -248,22 +248,26 @@ public class RoleController extends AbstractRestController<Role, Long> {
         InputStreamResource inputStreamResource = null;
         String contentDisposition;
         MediaType mediaType;
-        RoleParser roleParser = new RoleParser();
-        if (CsvParser.isCSVFileType(fileType)) {
-            contentDisposition = Parser.getContentDisposition(RoleParser.CSV_DOWNLOAD_FILE_NAME);
-            mediaType = Parser.getMediaType(CsvParser.CSV_MEDIA_TYPE);
-            inputStreamResource = roleParser.buildCSVResourceStream(roleService.getAll());
-        } else if (ExcelParser.isExcelFileType(fileType)) {
-            contentDisposition = Parser.getContentDisposition(RoleParser.EXCEL_DOWNLOAD_FILE_NAME);
-            mediaType = Parser.getMediaType(ExcelParser.EXCEL_MEDIA_TYPE);
-            inputStreamResource = roleParser.buildStreamResources(roleService.getAll());
-        } else {
-            throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
-        }
+        try {
+            if (CsvParser.isCSVFileType(fileType)) {
+                contentDisposition = Parser.getContentDisposition(RoleParser.CSV_DOWNLOAD_FILE_NAME);
+                mediaType = Parser.getMediaType(CsvParser.CSV_MEDIA_TYPE);
+                inputStreamResource = roleParser.buildCSVResourceStream(roleService.getAll());
+            } else if (ExcelParser.isExcelFileType(fileType)) {
+                contentDisposition = Parser.getContentDisposition(RoleParser.EXCEL_DOWNLOAD_FILE_NAME);
+                mediaType = Parser.getMediaType(ExcelParser.EXCEL_MEDIA_TYPE);
+                inputStreamResource = roleParser.buildStreamResources(roleService.getAll());
+            } else {
+                throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
+            }
 
-        // check inputStreamResource is not null
-        if (Objects.nonNull(inputStreamResource)) {
-            responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
+            // check inputStreamResource is not null
+            if (Objects.nonNull(inputStreamResource)) {
+                responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
+            }
+        } catch (java.io.IOException ex) {
+            LOGGER.error("Error downloading file: {}", ex.getMessage(), ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
         return responseEntity;

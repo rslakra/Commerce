@@ -51,6 +51,7 @@ public class TaskController extends AbstractRestController<Task, Long> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskController.class);
 
+    private final TaskParser taskParser;
     private final TaskService taskService;
 
     /**
@@ -58,6 +59,7 @@ public class TaskController extends AbstractRestController<Task, Long> {
      */
     @Autowired
     public TaskController(final TaskService taskService) {
+        this.taskParser = new TaskParser();
         this.taskService = taskService;
     }
 
@@ -210,7 +212,6 @@ public class TaskController extends AbstractRestController<Task, Long> {
         Payload payload = Payload.newBuilder();
         try {
             List<Task> taskList = null;
-            TaskParser taskParser = new TaskParser();
             if (CsvParser.isCSVFile(file)) {
                 taskList = taskParser.readCSVStream(file.getInputStream());
             } else if (ExcelParser.isExcelFile(file)) {
@@ -248,22 +249,26 @@ public class TaskController extends AbstractRestController<Task, Long> {
         InputStreamResource inputStreamResource = null;
         String contentDisposition;
         MediaType mediaType;
-        TaskParser taskParser = new TaskParser();
-        if (CsvParser.isCSVFileType(fileType)) {
-            contentDisposition = Parser.getContentDisposition(TaskParser.CSV_DOWNLOAD_FILE_NAME);
-            mediaType = Parser.getMediaType(CsvParser.CSV_MEDIA_TYPE);
-            inputStreamResource = taskParser.buildCSVResourceStream(taskService.getAll());
-        } else if (ExcelParser.isExcelFileType(fileType)) {
-            contentDisposition = Parser.getContentDisposition(TaskParser.EXCEL_DOWNLOAD_FILE_NAME);
-            mediaType = Parser.getMediaType(ExcelParser.EXCEL_MEDIA_TYPE);
-            inputStreamResource = taskParser.buildStreamResources(taskService.getAll());
-        } else {
-            throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
-        }
+        try {
+            if (CsvParser.isCSVFileType(fileType)) {
+                contentDisposition = Parser.getContentDisposition(TaskParser.CSV_DOWNLOAD_FILE_NAME);
+                mediaType = Parser.getMediaType(CsvParser.CSV_MEDIA_TYPE);
+                inputStreamResource = taskParser.buildCSVResourceStream(taskService.getAll());
+            } else if (ExcelParser.isExcelFileType(fileType)) {
+                contentDisposition = Parser.getContentDisposition(TaskParser.EXCEL_DOWNLOAD_FILE_NAME);
+                mediaType = Parser.getMediaType(ExcelParser.EXCEL_MEDIA_TYPE);
+                inputStreamResource = taskParser.buildStreamResources(taskService.getAll());
+            } else {
+                throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
+            }
 
-        // check inputStreamResource is not null
-        if (Objects.nonNull(inputStreamResource)) {
-            responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
+            // check inputStreamResource is not null
+            if (Objects.nonNull(inputStreamResource)) {
+                responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
+            }
+        } catch (java.io.IOException ex) {
+            LOGGER.error("Error downloading file: {}", ex.getMessage(), ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
         return responseEntity;

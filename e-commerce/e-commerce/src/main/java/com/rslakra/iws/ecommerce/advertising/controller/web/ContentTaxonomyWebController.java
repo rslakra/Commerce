@@ -39,7 +39,6 @@ public class ContentTaxonomyWebController extends AbstractWebController<ContentT
     private static final Logger LOGGER = LoggerFactory.getLogger(ContentTaxonomyWebController.class);
     
     private final ContentTaxonomyParser contentTaxonomyParser;
-    
     // contentTaxonomyService
     private final ContentTaxonomyService contentTaxonomyService;
     
@@ -172,7 +171,6 @@ public class ContentTaxonomyWebController extends AbstractWebController<ContentT
         Payload payload = Payload.newBuilder();
         try {
             List<ContentTaxonomy> contentTaxonomies = null;
-            ContentTaxonomyParser contentTaxonomyParser = new ContentTaxonomyParser();
             if (CsvParser.isCSVFile(file)) {
                 contentTaxonomies = contentTaxonomyParser.readCSVStream(file.getInputStream());
             } else if (ExcelParser.isExcelFile(file)) {
@@ -217,22 +215,26 @@ public class ContentTaxonomyWebController extends AbstractWebController<ContentT
         InputStreamResource inputStreamResource = null;
         String contentDisposition;
         MediaType mediaType;
-        ContentTaxonomyParser taskParser = new ContentTaxonomyParser();
-        if (CsvParser.isCSVFileType(fileType)) {
-            contentDisposition = Parser.getContentDisposition(ContentTaxonomyParser.CSV_DOWNLOAD_FILE_NAME);
-            mediaType = Parser.getMediaType(CsvParser.CSV_MEDIA_TYPE);
-            inputStreamResource = taskParser.buildCSVResourceStream(contentTaxonomyService.getAll());
-        } else if (ExcelParser.isExcelFileType(fileType)) {
-            contentDisposition = Parser.getContentDisposition(ContentTaxonomyParser.EXCEL_DOWNLOAD_FILE_NAME);
-            mediaType = Parser.getMediaType(ExcelParser.EXCEL_MEDIA_TYPE);
-            inputStreamResource = taskParser.buildStreamResources(contentTaxonomyService.getAll());
-        } else {
-            throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
-        }
-        
-        // check inputStreamResource is not null
-        if (Objects.nonNull(inputStreamResource)) {
-            responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
+        try {
+            if (CsvParser.isCSVFileType(fileType)) {
+                contentDisposition = Parser.getContentDisposition(ContentTaxonomyParser.CSV_DOWNLOAD_FILE_NAME);
+                mediaType = Parser.getMediaType(CsvParser.CSV_MEDIA_TYPE);
+                inputStreamResource = contentTaxonomyParser.buildCSVResourceStream(contentTaxonomyService.getAll());
+            } else if (ExcelParser.isExcelFileType(fileType)) {
+                contentDisposition = Parser.getContentDisposition(ContentTaxonomyParser.EXCEL_DOWNLOAD_FILE_NAME);
+                mediaType = Parser.getMediaType(ExcelParser.EXCEL_MEDIA_TYPE);
+                inputStreamResource = contentTaxonomyParser.buildStreamResources(contentTaxonomyService.getAll());
+            } else {
+                throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
+            }
+            
+            // check inputStreamResource is not null
+            if (Objects.nonNull(inputStreamResource)) {
+                responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
+            }
+        } catch (java.io.IOException ex) {
+            LOGGER.error("Error downloading file: {}", ex.getMessage(), ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
         
         return responseEntity;

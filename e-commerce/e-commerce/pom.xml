@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.18</version>
+        <version>3.5.7</version>
         <!-- lookup parent from a repository -->
         <relativePath/>
     </parent>
@@ -37,6 +37,7 @@
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <maven-checkstyle-plugin.version>3.5.0</maven-checkstyle-plugin.version>
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
+        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
 
         <!-- checkstyle -->
         <code-styles.dir>https://raw.githubusercontent.com/rslakra/code-styles/master</code-styles.dir>
@@ -46,7 +47,7 @@
         <appsuite-core.version>0.0.74</appsuite-core.version>
 
         <!-- appsuite-spring -->
-        <appsuite-spring.version>0.0.23</appsuite-spring.version>
+        <appsuite-spring.version>0.0.29</appsuite-spring.version>
 
         <!-- lombok -->
         <lombok.version>1.18.34</lombok.version>
@@ -204,6 +205,13 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
+            </plugin>
+
+            <!-- maven-surefire-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
             </plugin>
 
             <!-- maven-checkstyle-plugin -->

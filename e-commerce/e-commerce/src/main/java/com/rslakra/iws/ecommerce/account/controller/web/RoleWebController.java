@@ -171,7 +171,6 @@ public class RoleWebController extends AbstractWebController<Role, Long> {
         Payload payload = Payload.newBuilder();
         try {
             List<Role> roles = null;
-            RoleParser roleParser = new RoleParser();
             if (CsvParser.isCSVFile(file)) {
                 roles = roleParser.readCSVStream(file.getInputStream());
             } else if (ExcelParser.isExcelFile(file)) {
@@ -208,22 +207,26 @@ public class RoleWebController extends AbstractWebController<Role, Long> {
         InputStreamResource inputStreamResource = null;
         String contentDisposition;
         MediaType mediaType;
-        RoleParser taskParser = new RoleParser();
-        if (CsvParser.isCSVFileType(fileType)) {
-            contentDisposition = Parser.getContentDisposition(RoleParser.CSV_DOWNLOAD_FILE_NAME);
-            mediaType = Parser.getMediaType(CsvParser.CSV_MEDIA_TYPE);
-            inputStreamResource = taskParser.buildCSVResourceStream(roleService.getAll());
-        } else if (ExcelParser.isExcelFileType(fileType)) {
-            contentDisposition = Parser.getContentDisposition(RoleParser.EXCEL_DOWNLOAD_FILE_NAME);
-            mediaType = Parser.getMediaType(ExcelParser.EXCEL_MEDIA_TYPE);
-            inputStreamResource = taskParser.buildStreamResources(roleService.getAll());
-        } else {
-            throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
-        }
-        
-        // check inputStreamResource is not null
-        if (Objects.nonNull(inputStreamResource)) {
-            responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
+        try {
+            if (CsvParser.isCSVFileType(fileType)) {
+                contentDisposition = Parser.getContentDisposition(RoleParser.CSV_DOWNLOAD_FILE_NAME);
+                mediaType = Parser.getMediaType(CsvParser.CSV_MEDIA_TYPE);
+                inputStreamResource = roleParser.buildCSVResourceStream(roleService.getAll());
+            } else if (ExcelParser.isExcelFileType(fileType)) {
+                contentDisposition = Parser.getContentDisposition(RoleParser.EXCEL_DOWNLOAD_FILE_NAME);
+                mediaType = Parser.getMediaType(ExcelParser.EXCEL_MEDIA_TYPE);
+                inputStreamResource = roleParser.buildStreamResources(roleService.getAll());
+            } else {
+                throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
+            }
+            
+            // check inputStreamResource is not null
+            if (Objects.nonNull(inputStreamResource)) {
+                responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
+            }
+        } catch (java.io.IOException ex) {
+            LOGGER.error("Error downloading file: {}", ex.getMessage(), ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
         
         return responseEntity;

@@ -88,7 +88,7 @@ public class TaskController extends AbstractRestController<Task, Long> {
         TaskFilter taskFilter = new TaskFilter(allParams);
         if (taskFilter.hasKeys(TaskFilter.ID, TaskFilter.FIRST_NAME)) {
         } else if (taskFilter.hasKey(TaskFilter.ID)) {
-            tasks = Arrays.asList(taskService.getById(taskFilter.getLong(TaskFilter.ID)));
+            tasks = Arrays.asList(taskService.getById(taskFilter.getValue(TaskFilter.ID, Long.class)));
         } else if (taskFilter.hasKey(TaskFilter.FIRST_NAME)) {
         } else {
             tasks = taskService.getAll();
@@ -115,7 +115,7 @@ public class TaskController extends AbstractRestController<Task, Long> {
      * @return
      */
     @Override
-    public List<Task> getByFilter(Filter filter) {
+    public List<Task> getByFilter(Filter<Task> filter) {
         return null;
     }
 
@@ -125,7 +125,7 @@ public class TaskController extends AbstractRestController<Task, Long> {
      * @return
      */
     @Override
-    public Page<Task> getByFilter(Filter filter, Pageable pageable) {
+    public Page<Task> getByFilter(Filter<Task> filter, Pageable pageable) {
         return null;
     }
 

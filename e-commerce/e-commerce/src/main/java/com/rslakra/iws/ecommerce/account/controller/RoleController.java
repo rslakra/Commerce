@@ -86,7 +86,7 @@ public class RoleController extends AbstractRestController<Role, Long> {
         RoleFilter roleFilter = new RoleFilter(allParams);
         if (roleFilter.hasKeys(RoleFilter.ID, RoleFilter.NAME)) {
         } else if (roleFilter.hasKey(RoleFilter.ID)) {
-            roles = Arrays.asList(roleService.getById(roleFilter.getLong(RoleFilter.ID)));
+            roles = Arrays.asList(roleService.getById(roleFilter.getValue(RoleFilter.ID, Long.class)));
         } else if (roleFilter.hasKey(RoleFilter.NAME)) {
             roles = Arrays.asList(roleService.getByName(roleFilter.getValue(RoleFilter.NAME, String.class)));
         } else {
@@ -114,7 +114,7 @@ public class RoleController extends AbstractRestController<Role, Long> {
      * @return
      */
     @Override
-    public List<Role> getByFilter(Filter filter) {
+    public List<Role> getByFilter(Filter<Role> filter) {
         return null;
     }
 
@@ -124,7 +124,7 @@ public class RoleController extends AbstractRestController<Role, Long> {
      * @return
      */
     @Override
-    public Page<Role> getByFilter(Filter filter, Pageable pageable) {
+    public Page<Role> getByFilter(Filter<Role> filter, Pageable pageable) {
         return null;
     }
 

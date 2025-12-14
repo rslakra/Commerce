@@ -77,7 +77,7 @@ public class MarketingController extends AbstractRestController<Marketing, Long>
         MarketingFilter marketingFilter = new MarketingFilter(allParams);
         if (marketingFilter.hasKeys(MarketingFilter.ID, MarketingFilter.FIRST_NAME)) {
         } else if (marketingFilter.hasKey(MarketingFilter.ID)) {
-            marketings = Arrays.asList(marketingService.getById(marketingFilter.getLong(MarketingFilter.ID)));
+            marketings = Arrays.asList(marketingService.getById(marketingFilter.getValue(MarketingFilter.ID, Long.class)));
         } else {
             marketings = marketingService.getAll();
         }
@@ -103,7 +103,7 @@ public class MarketingController extends AbstractRestController<Marketing, Long>
      * @return
      */
     @Override
-    public List<Marketing> getByFilter(Filter filter) {
+    public List<Marketing> getByFilter(Filter<Marketing> filter) {
         return null;
     }
 
@@ -113,7 +113,7 @@ public class MarketingController extends AbstractRestController<Marketing, Long>
      * @return
      */
     @Override
-    public Page<Marketing> getByFilter(Filter filter, Pageable pageable) {
+    public Page<Marketing> getByFilter(Filter<Marketing> filter, Pageable pageable) {
         return null;
     }
 

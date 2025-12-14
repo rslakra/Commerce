@@ -1,6 +1,6 @@
 package com.rslakra.iws.ecommerce.account.filter;
 
-import com.rslakra.appsuite.spring.filter.AbstractFilter;
+import com.rslakra.appsuite.spring.filter.DefaultFilter;
 import com.rslakra.iws.ecommerce.account.persistence.entity.Role;
 
 import java.util.Map;
@@ -9,7 +9,7 @@ import java.util.Map;
  * @author Rohtash Lakra
  * @created 2/8/23 1:06 PM
  */
-public final class RoleFilter extends AbstractFilter<Role> {
+public final class RoleFilter extends DefaultFilter<Role> {
 
     /**
      * @param allParams

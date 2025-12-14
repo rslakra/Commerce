@@ -163,7 +163,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements 
      * @return
      */
     @Override
-    public List<User> getByFilter(Filter filter) {
+    public List<User> getByFilter(Filter<User> filter) {
         return userRepository.findAll();
     }
 
@@ -175,7 +175,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements 
      * @return
      */
     @Override
-    public Page<User> getByFilter(Filter filter, Pageable pageable) {
+    public Page<User> getByFilter(Filter<User> filter, Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 

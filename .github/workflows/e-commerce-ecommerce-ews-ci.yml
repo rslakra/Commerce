@@ -3,17 +3,17 @@ name: Commerce - EWS CI
 on:
   push:
     paths:
-      - "Commerce/e-commerce/ecommerce-ews/**"
-      - ".github/workflows/ecommerce-ews-ci.yml"
+      - "e-commerce/ecommerce-ews/**"
+      - ".github/workflows/e-commerce-ecommerce-ews-ci.yml"
   pull_request:
     paths:
-      - "Commerce/e-commerce/ecommerce-ews/**"
-      - ".github/workflows/ecommerce-ews-ci.yml"
+      - "e-commerce/ecommerce-ews/**"
+      - ".github/workflows/e-commerce-ecommerce-ews-ci.yml"
   workflow_dispatch:
 
 defaults:
   run:
-    working-directory: Commerce/e-commerce/ecommerce-ews
+    working-directory: e-commerce/ecommerce-ews
 
 jobs:
   build-and-test:
@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-          cache-dependency-path: Commerce/e-commerce/ecommerce-ews/requirements.txt
+          cache-dependency-path: e-commerce/ecommerce-ews/requirements.txt
 
       - name: Install dependencies
         run: |
@@ -35,4 +35,4 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run unit tests
-        run: python -m unittest discover -s tests -p "test_*.py" -v
+        run: python -m unittest discover -s tests -p "test_*.py" -t . -v

@@ -3,17 +3,17 @@ name: Commerce - ecommerce CI
 on:
   push:
     paths:
-      - "Commerce/e-commerce/e-commerce/**"
-      - ".github/workflows/e-commerce-ci.yml"
+      - "e-commerce/e-commerce/**"
+      - ".github/workflows/e-commerce-ecommerce-ci.yml"
   pull_request:
     paths:
-      - "Commerce/e-commerce/e-commerce/**"
-      - ".github/workflows/e-commerce-ci.yml"
+      - "e-commerce/e-commerce/**"
+      - ".github/workflows/e-commerce-ecommerce-ci.yml"
   workflow_dispatch:
 
 defaults:
   run:
-    working-directory: Commerce/e-commerce/e-commerce
+    working-directory: e-commerce/e-commerce
 
 jobs:
   build-and-test:
@@ -28,7 +28,7 @@ jobs:
           distribution: temurin
           java-version: "21"
           cache: maven
-          cache-dependency-path: Commerce/e-commerce/e-commerce/pom.xml
+          cache-dependency-path: e-commerce/e-commerce/pom.xml
 
       - name: Build and run unit tests
         run: mvn -B -ntp test

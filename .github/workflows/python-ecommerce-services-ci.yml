@@ -1,4 +1,4 @@
-name: Commerce - Python eCommerce Services CI
+name: Python eCommerce Services CI
 
 on:
   push:

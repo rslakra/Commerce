@@ -1,4 +1,4 @@
-name: Commerce - Java e-commerce CI
+name: Java e-commerce CI
 
 on:
   push:
